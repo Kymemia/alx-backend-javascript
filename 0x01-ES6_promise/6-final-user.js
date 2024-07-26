@@ -1,6 +1,5 @@
 /* eslint-disable import/extensions */
 import signUpUser from './4-user-promise.js';
-/* eslint-disable import/extensions */
 import uploadPhoto from './5-photo-reject.js';
 
 export default function handleProfileSignup(firstName, lastName, fileName) {
@@ -11,5 +10,5 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
       status: result.status,
       value: result.status === 'fulfilled' ? result.value : result.reason,
     })))
-    .catch((error) => console.error('Error handling promises:', error));
+    .catch((error) => Promise.reject(new Error(`Error handling promises:, ${error.message}`));
 }
