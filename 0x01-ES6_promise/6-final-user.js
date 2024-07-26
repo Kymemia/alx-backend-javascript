@@ -10,5 +10,5 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
       status: result.status,
       value: result.status === 'fulfilled' ? result.value : result.reason,
     })))
-    .catch((error) => Promise.reject(new Error(`Error handling promises:, ${error.message}`));
+    .catch((error) => Promise.reject(new Error(`Error handling promises:, ${error.message}`)));
 }
