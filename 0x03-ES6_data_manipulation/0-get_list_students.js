@@ -1,7 +1,14 @@
 export default function getListStudents() {
-  return [
-    { id: '1', firstName: 'Guillaume', location: 'San Francisco' },
-    { id: '2', firstName: 'James', location: 'Columbia' },
-    { id: '5', firstName: 'Serena', location: 'San Francisco' },
-  ];
+  class Student {
+    constructor(id, firstName, location) {
+      this.id = id;
+      this.firstName = firstName;
+      this.location = location;
+    }
+  }
+  const student1 = new Student(1, 'Guillaume', 'San Francisco');
+  const student2 = new Student(2, 'James', 'Columbia');
+  const student3 = new Student(5, 'Serena', 'San Francisco');
+  const arrayOfStudents = [student1, student2, student3];
+  return arrayOfStudents;
 }
