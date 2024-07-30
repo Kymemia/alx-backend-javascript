@@ -1,8 +1,3 @@
-export default function getStudentsByLocation(city, students) {
-  if (Array.isArray(students)) {
-    const selectStudents = students.filter((student)
-	    => student.location.toLowerCase() === city.toLowerCase());
-    return selectStudents;
-  }
-  return [];
+export default function getStudentsByLocation(city, listOfStudents) {
+  return listOfStudents.filter((student) => student.location === city);
 }
