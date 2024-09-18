@@ -5,65 +5,65 @@ const path = require('path');
 async function getStudentsFromCSV (filePath) {
   try {
     const data = await fs.readFile(filePath, 'utf8');
-    const lines = data.split('\n').filter(line => line.trim() !== '');
-    let firstLine = true;
+    const lines = data.trim().split('\n');
 
-    const students = lines.reduce((acc, line) => {
-      if (firstLine) {
-        firstLine = false;
-        return acc;
+    if (lines.length <= 1) {
+      return { totalStudents: 0, details: {} };
+    }
+
+    const students = {};
+
+    lines.slice(1).forEach((line) => {
+      const fields = line.split(',');
+      const field = fields[fields.length - 1].trim();
+
+      if (!students[field]) {
+        students[field] = [];
       }
-      const student = line.split(',');
-      const field = student[3];
-      const name = student[0];
 
-      if (!acc[field]) {
-        acc[field] = [];
-      }
-      acc[field].push(name);
-      return acc;
-    }, {});
-    const numberOfStudents = lines.length - 1;
-    let response = `Number of students: ${numberOfStudents}\n`;
-
-    Object.entries(students).forEach(([field, names]) => {
-      response += `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}`;
+      students[field].push(fields[0]);
     });
 
-    return response;
+    let totalStudents = 0;
+
+    Object.keys(students).forEach((field) => {
+      totalStudents += students[field].length;
+    });
+
+    return { totalStudents, details: students };
   } catch (error) {
     throw new Error('Cannot load the database');
   }
 }
 
 const app = http.createServer(async (req, res) => {
-  const urlPath = req.url;
-  const filePath = path.resolve(__dirname, 'database.csv');
-
-  if (urlPath === '/') {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
+  if (req.url === '/') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('Hello Holberton School!');
-  } else if (urlPath === '/students') {
+  } else if (req.url === '/students') {
+    const filePath = path.resolve(__dirname, 'database.csv');
     try {
-      const studentsResponse = await getStudentsFromCSV(filePath);
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'text/plain');
-      res.end(`This is the list of our students:${studentsResponse}`);
+      const { totalStudents, details } = await getStudentsFromCSV(filePath);
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.write('This is the list of our students\n');
+      res.write(`Number of students: ${totalStudents}`);
+      Object.keys(details).forEach((field) => {
+        const numStudents = details[field].length;
+        res.write(`\nNumber of students in ${field}: ${numStudents}. List: ${details[field].join(', ')}`);
+      });
+      res.end();
     } catch (error) {
-      res.statusCode = 500;
-      res.setHeader('Content-Type', 'text/plain');
-      res.end('Cannot load the database');
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end(`${error.message}\n`);
     }
   } else {
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Not Found\n');
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not found\n');
   }
 });
 
 app.listen(1245, () => {
-  console.log('Server running on port 1245');
+  console.log('Server listening on port 1245');
 });
 
 module.exports = app;
