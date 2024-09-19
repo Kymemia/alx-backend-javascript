@@ -1,0 +1,22 @@
+{
+  "name": "0x06-unittests_in_js",
+  "version": "1.0.0",
+  "description": "Learning Objectives At the end of this project, you are expected to be able to explain to anyone, without the help of Google:",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint .",
+    "fix": "eslint --fix ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "chai": "^5.1.1",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0",
+    "mocha": "^10.7.3",
+    "sinon": "^19.0.2"
+  }
+}
