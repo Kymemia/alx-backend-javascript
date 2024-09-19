@@ -3,6 +3,8 @@ let expect;
 before(async function () {
   const chai = await import('chai');
   expect = chai.expect;
+  const mocha = require('mocha');
+  const { describe, it, before, after } = mocha;
 });
 
 describe('Testing numbers', () => {
