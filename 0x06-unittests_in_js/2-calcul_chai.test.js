@@ -1,3 +1,5 @@
+const mocha = require('mocha');
+const { describe, it, before } = mocha;
 describe('calculateNumber', function () {
   let expect;
   let calculateNumber;
