@@ -19,5 +19,8 @@
     "globals": "^15.9.0",
     "mocha": "^10.7.3",
     "sinon": "^19.0.2"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
   }
 }
